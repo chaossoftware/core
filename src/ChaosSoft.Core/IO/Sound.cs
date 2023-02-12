@@ -1,13 +1,14 @@
-﻿using System;
+﻿using ChaosSoft.Core.Extensions;
+using System;
 using System.IO;
 using System.Text;
 
-namespace ChaosSoft.Core.Transform
+namespace ChaosSoft.Core.IO
 {
     /// <summary>
     /// Provides methods to transform series to sound.
     /// </summary>
-    public class Sound
+    public static class Sound
     {
         /// <summary>
         /// Create WAV file of signal "sound" with specified quality params.
@@ -15,13 +16,13 @@ namespace ChaosSoft.Core.Transform
         /// <param name="filePath">output sound file name</param>
         /// <param name="freq">frequency of quantization</param>
         /// <param name="bits">digits of quantization</param>
-        /// <param name="yt">Y coordinates of signal</param>
-        public static void CreateWavFile(string filePath, int freq, int bits, double[] yt)
+        /// <param name="series">signal</param>
+        public static void CreateWavFile(string filePath, int freq, int bits, double[] series)
         {
-            long pts = yt.Length;
+            long pts = series.Length;
 
-            double xtmin = FastMath.Min(yt);
-            double xtmax = FastMath.Max(yt);
+            double xtmin = Vector.Min(series);
+            double xtmax = Vector.Max(series);
 
             File.Delete(filePath);
             FileStream wavFile = File.Create(filePath);
@@ -53,38 +54,38 @@ namespace ChaosSoft.Core.Transform
             // block alignment (2 bytes) +
             // bits per sample (2 bytes).
             // This is usually 16.
-            info = BitConverter.GetBytes((int)16);
+            info = BitConverter.GetBytes(16);
             wavFile.Write(info, 0, info.Length);
 
             // (2 bytes) WAVE type format
             // Type of WAVE format. This is a PCM header = $01 (linear quntization).
             // Other values indicates some forms of compression.
-            info = BitConverter.GetBytes((Int16)1);
+            info = BitConverter.GetBytes((short)1);
             wavFile.Write(info, 0, info.Length);
 
             // (2 bytes) Number of channels
             // mono ($01) or stereo ($02)
-            info = BitConverter.GetBytes((Int16)1);
+            info = BitConverter.GetBytes((short)1);
             wavFile.Write(info, 0, info.Length);
 
             // (4 bytes)     Samples per second
             // The frequency of quantization (usually 44100 Hz, 22050 Hz, ...)
-            info = BitConverter.GetBytes((int)freq);
+            info = BitConverter.GetBytes(freq);
             wavFile.Write(info, 0, info.Length);
 
             // (4 bytes) Bytes per second
             // Speed of data stream = Number_of_channels * Samples_per_second * Bits_per_Sample/8
-            info = BitConverter.GetBytes((int)(freq * bits / 8));
+            info = BitConverter.GetBytes(freq * bits / 8);
             wavFile.Write(info, 0, info.Length);
 
             // (2 bytes) Block alignment
             // Number of bytes in elementary quantization = Number_of_channels*Bits_per_Sample/8
-            info = BitConverter.GetBytes((Int16)(bits / 8));
+            info = BitConverter.GetBytes((short)(bits / 8));
             wavFile.Write(info, 0, info.Length);
 
             // (2 bytes) Bits per sample 
             // Digits of quantization (usually 32, 24, 16, 8)
-            info = BitConverter.GetBytes((Int16)bits);
+            info = BitConverter.GetBytes((short)bits);
             wavFile.Write(info, 0, info.Length);
 
             // Data description header
@@ -92,7 +93,7 @@ namespace ChaosSoft.Core.Transform
             wavFile.Write(info, 0, info.Length);
 
             // (4 bytes) Size of data
-            info = BitConverter.GetBytes((int)pts);         
+            info = BitConverter.GetBytes((int)pts);
             wavFile.Write(info, 0, info.Length);
 
             // as bytes array
@@ -100,7 +101,7 @@ namespace ChaosSoft.Core.Transform
 
             for (int t = 0; t < pts; t++)
             {
-                double _yt = 255 * (yt[t] - xtmin) / (xtmax - xtmin);
+                double _yt = 255 * (series[t] - xtmin) / (xtmax - xtmin);
                 data[t] = (byte)_yt;
             }
 
@@ -113,8 +114,8 @@ namespace ChaosSoft.Core.Transform
         /// Create WAV file (8Khz8bit) of signal "sound"
         /// </summary>
         /// <param name="filePath">output sound file name</param>
-        /// <param name="yt">Y coordinates of signal</param>
-        public static void CreateWavFile(string filePath, double[] yt) =>
-            CreateWavFile(filePath, 8000, 8, yt);
+        /// <param name="series">signal</param>
+        public static void CreateWavFile(string filePath, double[] series) =>
+            CreateWavFile(filePath, 8000, 8, series);
     }
 }

@@ -1,11 +1,12 @@
-﻿using ChaosSoft.Core.IO;
+﻿using ChaosSoft.Core.Extensions;
+using ChaosSoft.Core.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ChaosSoft.Core.Data
 {
-    public class DataSeries
+    public sealed class DataSeries
     {
         private DataPoint max;
         private DataPoint min;
@@ -128,8 +129,8 @@ namespace ChaosSoft.Core.Data
 
         private void UpdateProperties()
         {
-            min = new DataPoint(XValues.Min(), YValues.Min());
-            max = new DataPoint(XValues.Max(), YValues.Max());
+            min = new DataPoint(Vector.Min(XValues), Vector.Min(YValues));
+            max = new DataPoint(Vector.Max(XValues), Vector.Max(YValues));
             amplitude = new DataPoint(max.X - min.X, max.Y - min.Y);
             outdated = false;
         }

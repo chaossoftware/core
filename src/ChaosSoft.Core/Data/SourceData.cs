@@ -4,7 +4,7 @@ using ChaosSoft.Core.IO;
 
 namespace ChaosSoft.Core.Data
 {
-    public class SourceData
+    public sealed class SourceData
     {
         private readonly double[][] _dataColumns;
 
@@ -34,18 +34,41 @@ namespace ChaosSoft.Core.Data
             SetTimeSeries(0, 0, LinesCount, 1, false);
         }
 
+        /// <summary>
+        /// Gets count of lines in source data.
+        /// </summary>
         public int LinesCount { get; }
 
+        /// <summary>
+        /// Gets count of columns in source data.
+        /// </summary>
         public int ColumnsCount { get; }
 
+        /// <summary>
+        /// Gets source file name.
+        /// </summary>
         public string FileName { get; }
 
+        /// <summary>
+        /// Gets source folder.
+        /// </summary>
         public string Folder { get; }
 
-        public DataSeries TimeSeries { get; protected set; }
+        /// <summary>
+        /// Gets current data series.
+        /// </summary>
+        public DataSeries TimeSeries { get; private set; }
 
-        public double Step { get; protected set; }
+        /// <summary>
+        /// Gets current data step size.
+        /// </summary>
+        public double Step { get; private set; }
 
+        /// <summary>
+        /// Gets source data from double[][] serializaed to a file.
+        /// </summary>
+        /// <param name="filePath">path to file with serializaed data</param>
+        /// <returns></returns>
         public static SourceData FromBytesFile(string filePath)
         {
             double[][] data = DataReader.ReadColumnsFromByteFile(filePath);
@@ -79,9 +102,9 @@ namespace ChaosSoft.Core.Data
         public double[] GetColumn(int index) =>
             _dataColumns[index];
 
-        public string GetTimeSeriesString()
+        public string GetTimeSeriesAsString()
         {
-            var timeSeriesOut = new StringBuilder();
+            StringBuilder timeSeriesOut = new StringBuilder();
 
             foreach (double value in TimeSeries.YValues)
             {

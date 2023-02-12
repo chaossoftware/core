@@ -2,7 +2,7 @@
 
 namespace ChaosSoft.Core.Data
 {
-    public struct DataPoint
+    public readonly struct DataPoint
     {
         public DataPoint(double x, double y)
         {
