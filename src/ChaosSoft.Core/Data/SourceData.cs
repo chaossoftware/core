@@ -1,24 +1,37 @@
 ﻿using System.IO;
-using System.Text;
 using ChaosSoft.Core.IO;
 
 namespace ChaosSoft.Core.Data
 {
+    /// <summary>
+    /// Represents source file data with any number of data colmns. 
+    /// </summary>
     public sealed class SourceData
     {
         private readonly double[][] _dataColumns;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceData"/> class based on source file and data read range.
+        /// </summary>
+        /// <param name="filePath">path to source file</param>
+        /// <param name="startOffset">amount of lines to skip for reading</param>
+        /// <param name="readLines">amount of lines to read</param>
         public SourceData(string filePath, int startOffset, int readLines) :
             this(DataReader.ReadColumnsFromFile(filePath, startOffset, readLines), filePath)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceData"/> class based on source file 
+        /// (all lines will be read).
+        /// </summary>
+        /// <param name="filePath">path to source file</param>
         public SourceData(string filePath) : 
             this(DataReader.ReadColumnsFromFile(filePath, 0, 0), filePath)
         {
         }
 
-        public SourceData(double[][] data, string filePath)
+        private SourceData(double[][] data, string filePath)
         {
             _dataColumns = data;
 
@@ -99,21 +112,18 @@ namespace ChaosSoft.Core.Data
             Step = TimeSeries.DataPoints[1].X - TimeSeries.DataPoints[0].X;
         }
 
+        /// <summary>
+        /// Gets data column with specific index.
+        /// </summary>
+        /// <param name="index">column index in data file</param>
+        /// <returns></returns>
         public double[] GetColumn(int index) =>
             _dataColumns[index];
 
-        public string GetTimeSeriesAsString()
-        {
-            StringBuilder timeSeriesOut = new StringBuilder();
-
-            foreach (double value in TimeSeries.YValues)
-            {
-                timeSeriesOut.AppendLine(NumFormatter.ToLong(value));
-            }
-
-            return timeSeriesOut.ToString();
-        }
-
+        /// <summary>
+        /// Gets main information on source data file.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() =>
             $"File: {FileName}\nLines: {LinesCount}\nColumns: {ColumnsCount}";
     }

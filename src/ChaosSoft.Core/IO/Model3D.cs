@@ -3,6 +3,9 @@ using System.Text;
 
 namespace ChaosSoft.Core.IO
 {
+    /// <summary>
+    /// Provides methods to transform series to 3D model files.
+    /// </summary>
     public static class Model3D
     {
         /// <summary>

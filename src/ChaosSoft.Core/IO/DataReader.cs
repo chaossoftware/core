@@ -6,11 +6,22 @@ using System.Text.RegularExpressions;
 
 namespace ChaosSoft.Core.IO
 {
+    /// <summary>
+    /// Provides with methods for reading of data files with timeseries.
+    /// </summary>
     public static class DataReader
     {
-        private const string NumberRegex = "\\s+";
-
-        public static double[][] ReadColumnsFromFile(string file, int startOffset, int readLines)
+        /// <summary>
+        /// Reads file from specific path and gets specified data range from the file using column delimiter regex.
+        /// </summary>
+        /// <param name="file">path to file to read</param>
+        /// <param name="startOffset">amount of lines to skip for reading</param>
+        /// <param name="readLines">amount of lines to read</param>
+        /// <param name="delimiterRegex">regex fo column delimeter</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static double[][] ReadColumnsFromFile(string file, int startOffset, int readLines, string delimiterRegex)
         {
             if (!File.Exists(file))
             {
@@ -19,12 +30,12 @@ namespace ChaosSoft.Core.IO
 
             int i, j;
 
-            var sourceData = File.ReadAllLines(file);
+            string[] sourceData = File.ReadAllLines(file);
 
             // Determine how many numbers in line.
-            var columns = Regex.Split(sourceData[startOffset].Trim(), NumberRegex).Length;
+            int columns = Regex.Split(sourceData[startOffset].Trim(), delimiterRegex).Length;
 
-            var length = readLines == 0 ? sourceData.Length - startOffset : readLines;
+            int length = readLines == 0 ? sourceData.Length - startOffset : readLines;
 
             double[][] dataColumns = new double[columns][];
 
@@ -35,7 +46,7 @@ namespace ChaosSoft.Core.IO
 
             for (i = startOffset; i < length + startOffset; i++)
             {
-                var numbers = Regex.Split(sourceData[i].Trim(), NumberRegex);
+                var numbers = Regex.Split(sourceData[i].Trim(), delimiterRegex);
 
                 for (j = 0; j < columns; j++)
                 {
@@ -45,7 +56,8 @@ namespace ChaosSoft.Core.IO
                     }
                     else
                     {
-                        throw new ArgumentException($"Unable to parse value (Line: {i + 1}, Column: {j} [value: {numbers[j]}])");
+                        throw new ArgumentException(
+                            $"Unable to parse value (Line: {i + 1}, Column: {j + 1} [value: {numbers[j]}])");
                     }
                 }
             }
@@ -53,6 +65,23 @@ namespace ChaosSoft.Core.IO
             return dataColumns;
         }
 
+        /// <summary>
+        /// Reads file from specific path and gets specified data range from the file considering column delimeter as whitespace.
+        /// </summary>
+        /// <param name="file">path to file to read</param>
+        /// <param name="startOffset">amount of lines to skip for reading</param>
+        /// <param name="readLines">amount of lines to read</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static double[][] ReadColumnsFromFile(string file, int startOffset, int readLines) =>
+            ReadColumnsFromFile(file, startOffset, readLines, "\\s+");
+
+        /// <summary>
+        /// Reads source data file as serialized double[][].
+        /// </summary>
+        /// <param name="fileName">path to file to read</param>
+        /// <returns></returns>
         public static double[][] ReadColumnsFromByteFile(string fileName)
         {
             byte[] bytes = File.ReadAllBytes(fileName);

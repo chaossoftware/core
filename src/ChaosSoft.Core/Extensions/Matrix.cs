@@ -3,6 +3,9 @@ using System;
 
 namespace ChaosSoft.Core.Extensions
 {
+    /// <summary>
+    /// Common operations on matrixes.
+    /// </summary>
     public static class Matrix
     {
         /// <summary>
@@ -162,7 +165,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets minimum value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>minimum value</returns>
         public static double Min(double[,] matrix)
         {
@@ -182,7 +185,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets minimum value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>minimum value</returns>
         public static int Min(int[,] matrix)
         {
@@ -202,7 +205,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets maximum value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>minimum value</returns>
         public static double Max(double[,] matrix)
         {
@@ -222,7 +225,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets maximum value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>minimum value</returns>
         public static int Max(int[,] matrix)
         {
@@ -242,7 +245,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets maximum absolute value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>maximum absolute value</returns>
         public static double MaxAbs(double[,] matrix)
         {
@@ -262,7 +265,7 @@ namespace ChaosSoft.Core.Extensions
         /// <summary>
         /// Gets maximum absolute value from matrix.
         /// </summary>
-        /// <param name="vector">matrix</param>
+        /// <param name="matrix">matrix</param>
         /// <returns>maximum absolute value</returns>
         public static int MaxAbs(int[,] matrix)
         {
