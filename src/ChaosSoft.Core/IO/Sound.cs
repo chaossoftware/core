@@ -1,4 +1,4 @@
-﻿using ChaosSoft.Core.Extensions;
+﻿using ChaosSoft.Core.DataUtils;
 using System;
 using System.IO;
 using System.Text;

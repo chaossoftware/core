@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 
-namespace ChaosSoft.Core.Extensions
+namespace ChaosSoft.Core.DataUtils
 {
     /// <summary>
     /// Common operations on matrixes.
