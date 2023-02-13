@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>ChaosSoft.Core</id>
-    <version>1.0.0</version>
+    <version>$version$</version>
     <title>ChaosSoft.Core</title>
     <authors>Vitaliy Dobriyan</authors>
     <license type="expression">Apache-2.0</license>
