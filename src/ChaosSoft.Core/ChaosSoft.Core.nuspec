@@ -2,33 +2,32 @@
 <package >
   <metadata>
     <id>ChaosSoft.Core</id>
-    <version>1.0.0</version>
+    <version>$version$</version>
     <title>ChaosSoft.Core</title>
     <authors>Vitaliy Dobriyan</authors>
     <license type="expression">Apache-2.0</license>
-    <copyright>Copyright (c) Vitaliy Dobriyan 2022</copyright>
-    <projectUrl>https://bitbucket.org/dobriyanchik/chaossoft</projectUrl>
-    <repository type="git" url="https://bitbucket.org/dobriyanchik/chaossoft"/>
+    <copyright>Copyright (c) Vitaliy Dobriyan 2023</copyright>
+    <projectUrl>https://github.com/chaossoftware/core</projectUrl>
+    <repository type="git" url="https://github.com/chaossoftware/core.git"/>
     <icon>images\icon.png</icon>
+    <readme>docs\README.md</readme>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      This package includes base data IO, Timeseries related objects, numerical methods.
+      This package includes data and timeseries related objects and data specific IO operations, some math helpers.
     </description>
-    <releaseNotes>First release: base data IO, Timeseries related objects, numerical methods.</releaseNotes>
-    <tags>math numerical-methods lyapunov</tags>
+    <releaseNotes>First release: SourceData and DataSeries objects, date series specific IO operations, helpers for vectors and matrixes.</releaseNotes>
+    <tags>math io timeseries</tags>
     <dependencies>
-      <group targetFramework="net452"/>
-      <group targetFramework="net5.0"/>
       <group targetFramework="netstandard2.0"/>
+      <group targetFramework="net6.0"/>
     </dependencies>
   </metadata>
   <files>
+    <file src="..\..\README.md" target="docs\" />
     <file src="..\..\icon.png" target="images\" />
-    <file src="bin\Release\net452\chaossoft.core.dll" target="lib\net452" />
-    <file src="bin\Release\net452\chaossoft.core.xml" target="lib\net452" />
     <file src="bin\Release\netstandard2.0\chaossoft.core.dll" target="lib\netstandard2.0" />
     <file src="bin\Release\netstandard2.0\chaossoft.core.xml" target="lib\netstandard2.0" />
-    <file src="bin\Release\net5.0\chaossoft.core.dll" target="lib\net5.0" />
-    <file src="bin\Release\net5.0\chaossoft.core.xml" target="lib\net5.0" />
+    <file src="bin\Release\net6.0\chaossoft.core.dll" target="lib\net6.0" />
+    <file src="bin\Release\net6.0\chaossoft.core.xml" target="lib\net6.0" />
   </files>
 </package>

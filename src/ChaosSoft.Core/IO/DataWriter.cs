@@ -1,11 +1,20 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace ChaosSoft.Core.IO
 {
+    /// <summary>
+    /// Provides with methods for data writing.
+    /// </summary>
     public class DataWriter
     {
+        /// <summary>
+        /// Created file with specific name and data.
+        /// </summary>
+        /// <param name="fileName">file name to create</param>
+        /// <param name="data">string data to write</param>
         public static void CreateDataFile(string fileName, string data)
         {
             File.Delete(fileName);
@@ -15,7 +24,13 @@ namespace ChaosSoft.Core.IO
             outFile.Close();
         }
 
-        public static void CreateDataFile(string fileName, double[,] data)
+        /// <summary>
+        /// Writes multidimensional array data into specified file with specified number format.
+        /// </summary>
+        /// <param name="fileName">path to file to create</param>
+        /// <param name="data">data to write</param>
+        /// <param name="format">numbers format to use</param>
+        public static void CreateDataFile(string fileName, double[,] data, string format)
         {
             var output = new StringBuilder();
 
@@ -23,7 +38,7 @@ namespace ChaosSoft.Core.IO
             {
                 for (int j = 0; j < data.GetLength(0); j++)
                 {
-                    output.Append($"{NumFormatter.ToShort(data[j, i])}\t");
+                    output.Append($"{data[j, i].ToString(format, CultureInfo.InvariantCulture)}\t");
                 }
 
                 output.AppendLine();
@@ -32,6 +47,20 @@ namespace ChaosSoft.Core.IO
             CreateDataFile(fileName, output.ToString());
         }
 
+        /// <summary>
+        /// Writes multidimensional array data into specified file with G6 number format.
+        /// </summary>
+        /// <param name="fileName">path to file to create</param>
+        /// <param name="data">data to write</param>
+        public static void CreateDataFile(string fileName, double[,] data) =>
+            CreateDataFile(fileName, data, Format.Default);
+
+        /// <summary>
+        /// Create source data file and serialize data into it.
+        /// </summary>
+        /// <param name="fileName">path to file to create</param>
+        /// <param name="data">data to serialize</param>
+        /// <returns></returns>
         public static void CreateBytesDataFile(string fileName, double[][] data)
         {
             using (MemoryStream ms = new MemoryStream())

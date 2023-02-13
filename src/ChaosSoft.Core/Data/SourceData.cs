@@ -1,24 +1,37 @@
 ﻿using System.IO;
-using System.Text;
 using ChaosSoft.Core.IO;
 
 namespace ChaosSoft.Core.Data
 {
-    public class SourceData
+    /// <summary>
+    /// Represents source file data with any number of data colmns. 
+    /// </summary>
+    public sealed class SourceData
     {
         private readonly double[][] _dataColumns;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceData"/> class based on source file and data read range.
+        /// </summary>
+        /// <param name="filePath">path to source file</param>
+        /// <param name="startOffset">amount of lines to skip for reading</param>
+        /// <param name="readLines">amount of lines to read</param>
         public SourceData(string filePath, int startOffset, int readLines) :
             this(DataReader.ReadColumnsFromFile(filePath, startOffset, readLines), filePath)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceData"/> class based on source file 
+        /// (all lines will be read).
+        /// </summary>
+        /// <param name="filePath">path to source file</param>
         public SourceData(string filePath) : 
             this(DataReader.ReadColumnsFromFile(filePath, 0, 0), filePath)
         {
         }
 
-        public SourceData(double[][] data, string filePath)
+        private SourceData(double[][] data, string filePath)
         {
             _dataColumns = data;
 
@@ -34,18 +47,41 @@ namespace ChaosSoft.Core.Data
             SetTimeSeries(0, 0, LinesCount, 1, false);
         }
 
+        /// <summary>
+        /// Gets count of lines in source data.
+        /// </summary>
         public int LinesCount { get; }
 
+        /// <summary>
+        /// Gets count of columns in source data.
+        /// </summary>
         public int ColumnsCount { get; }
 
+        /// <summary>
+        /// Gets source file name.
+        /// </summary>
         public string FileName { get; }
 
+        /// <summary>
+        /// Gets source folder.
+        /// </summary>
         public string Folder { get; }
 
-        public DataSeries TimeSeries { get; protected set; }
+        /// <summary>
+        /// Gets current data series.
+        /// </summary>
+        public DataSeries TimeSeries { get; private set; }
 
-        public double Step { get; protected set; }
+        /// <summary>
+        /// Gets current data step size.
+        /// </summary>
+        public double Step { get; private set; }
 
+        /// <summary>
+        /// Gets source data from double[][] serializaed to a file.
+        /// </summary>
+        /// <param name="filePath">path to file with serializaed data</param>
+        /// <returns></returns>
         public static SourceData FromBytesFile(string filePath)
         {
             double[][] data = DataReader.ReadColumnsFromByteFile(filePath);
@@ -76,21 +112,18 @@ namespace ChaosSoft.Core.Data
             Step = TimeSeries.DataPoints[1].X - TimeSeries.DataPoints[0].X;
         }
 
+        /// <summary>
+        /// Gets data column with specific index.
+        /// </summary>
+        /// <param name="index">column index in data file</param>
+        /// <returns></returns>
         public double[] GetColumn(int index) =>
             _dataColumns[index];
 
-        public string GetTimeSeriesString()
-        {
-            var timeSeriesOut = new StringBuilder();
-
-            foreach (double value in TimeSeries.YValues)
-            {
-                timeSeriesOut.AppendLine(NumFormatter.ToLong(value));
-            }
-
-            return timeSeriesOut.ToString();
-        }
-
+        /// <summary>
+        /// Gets main information on source data file.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() =>
             $"File: {FileName}\nLines: {LinesCount}\nColumns: {ColumnsCount}";
     }
